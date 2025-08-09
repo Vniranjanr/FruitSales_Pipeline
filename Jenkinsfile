@@ -14,10 +14,14 @@ pipeline {
             }
         }
         stage('Check for blanks in Excel') {
+            agent {
+                docker {
+                    image 'python:3.10-slim'  // or any python image you prefer
+                    args '-v $WORKSPACE:$WORKSPACE -w $WORKSPACE'  // mount workspace
+                }
+            }
             steps {
                 sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
                     pip install pandas openpyxl
                     python - <<EOF
                         import os
