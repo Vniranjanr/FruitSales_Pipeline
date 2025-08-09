@@ -1,32 +1,39 @@
 pipeline {
     agent any
+    environment {
+        TODAY=$(TZ="America/Chicago" date +%Y%m%d)
+        FILE="fruit_sales_${TODAY}.xlsx"
+    }
     stages {
         stage('Check file') {
             steps {
                 sh '''
-                  echo "📂 Files in repository:"
-                    ls -al
-                  TODAY=$(TZ="America/Chicago" date +%Y%m%d)
-                  FILE="fruit_sales_${TODAY}.xlsx"
-                  echo "The file name I'm looking for is: $FILE"
-                  echo "🔍 Checking for fruit_sales.xlsx..."
+                  echo "🔍 Checking for today's file..."
                   test -f "$FILE" && echo "✅ File exists for today" || echo "❌ File not found.."
-
                 '''
             }
         }
         stage('Check for blanks in Excel') {
             steps {
                 sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
                     pip install pandas openpyxl
-                    python -c "
+                    python - <<EOF
+                        import os
                         import pandas as pd
+
+                        FILE = os.getenv('FILE')
+                        if not FILE:
+                            print("FILE environment variable not set")
+                            exit(1)
+
                         df = pd.read_excel(FILE)
                         if df.isnull().values.any():
-                            print('blanks found')
+                            print("blanks found")
                         else:
-                            print('no blanks found')
-                    "
+                            print("no blanks found")
+                    EOF
                 '''
             }
         }
