@@ -20,6 +20,7 @@ pipeline {
                 docker {
                     image 'python:3.10-slim'  // or any python image you prefer
                     args '-v $WORKSPACE:$WORKSPACE -w $WORKSPACE'  // mount workspace
+                    reuseNode true
                 }
             }
             steps {
