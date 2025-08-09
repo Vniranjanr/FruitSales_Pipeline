@@ -8,7 +8,7 @@ pipeline {
                     ls -al
 
                     echo "🔍 Checking for fruit_sales.xlsx..."
-                    test -f fruit_sales.xlsx && echo "✅ File exists" || echo "❌ File not found"
+                    test -f fruit_sales.xlsx && echo "✅ File exists" || echo "❌ File not found.."
                 '''
             }
         }
