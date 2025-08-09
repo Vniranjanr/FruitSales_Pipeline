@@ -21,24 +21,24 @@ pipeline {
                 }
             }
             steps {
-                        sh '''
-                            pip install pandas openpyxl
-                            python - <<EOF
-                import os
-                import pandas as pd
+                sh '''
+                    pip install pandas openpyxl
+                    python - <<EOF
+import os
+import pandas as pd
 
-                FILE = os.getenv('FILE')
-                if not FILE:
-                    print("FILE environment variable not set")
-                    exit(1)
+FILE = os.getenv('FILE')
+if not FILE:
+    print("FILE environment variable not set")
+    exit(1)
 
-                df = pd.read_excel(FILE)
-                if df.isnull().values.any():
-                    print("blanks found")
-                else:
-                    print("no blanks found")
-                EOF
-                        '''
+df = pd.read_excel(FILE)
+if df.isnull().values.any():
+    print("blanks found")
+else:
+    print("no blanks found")
+EOF
+                '''
             }
         }
     }
