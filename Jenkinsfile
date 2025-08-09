@@ -4,12 +4,11 @@ pipeline {
         stage('Check file') {
             steps {
                 sh '''
-                  if [test -f fruit_sales.xlsx];then
-                    echo "File found"
-                  else
-                    echo "File not found"
-                    exit 1
-                  fi
+                  echo "📂 Files in repository:"
+                    ls -al
+
+                    echo "🔍 Checking for fruit_sales.xlsx..."
+                    test -f fruit_sales.xlsx && echo "✅ File exists" || echo "❌ File not found"
                 '''
             }
         }
