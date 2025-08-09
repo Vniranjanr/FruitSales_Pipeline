@@ -28,7 +28,7 @@ pipeline {
 import os
 import pandas as pd
 
-df = pd.read_excel(FILE)
+df = pd.read_excel(env.FILE)
 if df.isnull().values.any():
     print("blanks found")
 else:
