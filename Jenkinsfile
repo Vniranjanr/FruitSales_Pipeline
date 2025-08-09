@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        TODAY=$(TZ="America/Chicago" date +%Y%m%d)
+        TODAY = "${new Date().format('yyyyMMdd', TimeZone.getTimeZone('America/Chicago'))}"
         FILE="fruit_sales_${TODAY}.xlsx"
     }
     stages {
