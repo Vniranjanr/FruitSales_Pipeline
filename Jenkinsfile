@@ -10,36 +10,28 @@ pipeline {
                 sh '''
                   echo "🔍 Checking for today's file..."
                   test -f "$FILE" && echo "✅ File exists for today" || echo "❌ File not found.."
-                  echo "Current working directory is:"
-                  pwd
                 '''
             }
         }
         stage('Check for blanks in Excel') {
             agent {
                 docker {
-                    image 'python:3.10-slim'  // or any python image you prefer
-                    //args '-v $WORKSPACE:$WORKSPACE -w $WORKSPACE'  // mount workspace
+                    image 'python:3.10-slim'
                     args '--volumes-from jenkins-docker -w /var/jenkins_home/workspace/checkFile'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
-                    echo "Current directory:"
-                    pwd
-                    echo "Listing files:"
-                    ls -l
                     pip install pandas openpyxl
                     python - <<EOF
 import os
 import pandas as pd
 
-FILE = os.getenv('FILE')
-if not FILE:
-    print("FILE environment variable not set")
-    exit(1)
-print("Current working directory inside python.:", os.getcwd())
+// FILE = os.getenv('FILE')
+// if not FILE:
+//     print("FILE environment variable not set")
+//     exit(1)
 df = pd.read_excel(FILE)
 if df.isnull().values.any():
     print("blanks found")
