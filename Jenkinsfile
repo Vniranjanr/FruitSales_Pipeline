@@ -19,7 +19,8 @@ pipeline {
             agent {
                 docker {
                     image 'python:3.10-slim'  // or any python image you prefer
-                    args '-v $WORKSPACE:$WORKSPACE -w $WORKSPACE'  // mount workspace
+                    //args '-v $WORKSPACE:$WORKSPACE -w $WORKSPACE'  // mount workspace
+                    args '-v /var/lib/docker/volumes/jenkins_home/_data/workspace/checkFile:/var/jenkins_home/workspace/checkFile -w /var/jenkins_home/workspace/checkFile'
                     reuseNode true
                 }
             }
