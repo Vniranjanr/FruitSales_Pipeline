@@ -39,7 +39,7 @@ FILE = os.getenv('FILE')
 if not FILE:
     print("FILE environment variable not set")
     exit(1)
-print("Current working directory inside python:", os.getcwd())
+print("Current working directory inside python.:", os.getcwd())
 df = pd.read_excel(FILE)
 if df.isnull().values.any():
     print("blanks found")
