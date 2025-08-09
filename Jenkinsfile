@@ -25,10 +25,11 @@ pipeline {
                 sh '''
                     pip install pandas openpyxl
                     python - <<EOF
-
+import os
 import pandas as pd
 
-df = pd.read_excel(env.FILE)
+FILE = os.getenv('FILE')
+df = pd.read_excel(FILE)
 if df.isnull().values.any():
     print("blanks found")
 else:
